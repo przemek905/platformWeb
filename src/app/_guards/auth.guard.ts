@@ -14,6 +14,11 @@ export class AuthGuard implements CanActivate {
             return true;
         }
 
+        if (localStorage.getItem('currentUser') && localStorage.getItem('passwordReset')) {
+            this.router.navigate(['/pplatform/updatePassword']);
+            return false;
+        }
+
         // not logged in so redirect to login page with the return url
         this.router.navigate(['/pplatform/login']);
         return false;

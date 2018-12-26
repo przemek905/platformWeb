@@ -1,6 +1,9 @@
 <div class="col-md-6 col-md-offset-3">
     <h1>Hi {{currentUser.username}}!</h1>
     <p>You're logged in PPlatform</p>
+    <p>This is a message from API after authenticated login:</p>
+    <p>{{message}}</p>
 
     <p><a [routerLink]="['/pplatform/login']">Logout</a></p>
+    <p><a [routerLink]="['/pplatform/updatePassword']">Change password</a></p>
 </div>

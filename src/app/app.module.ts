@@ -19,6 +19,9 @@ import { RegistrationTokenComponent } from './registration-token/registration-to
 import { MainComponent } from './main/main.component';
 import {LoggerConfig, NGXLogger, NGXLoggerHttpService} from "ngx-logger";
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { UpdatePasswordComponent } from './update-password/update-password.component';
+import {HomeService} from "./_services/home.service";
 
 @NgModule({
     imports: [
@@ -35,7 +38,9 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
         LoginComponent,
         RegisterComponent,
         RegistrationTokenComponent,
-        MainComponent
+        MainComponent,
+        ResetPasswordComponent,
+        UpdatePasswordComponent
     ],
     providers: [
         AuthGuard,
@@ -49,7 +54,8 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
         },
         NGXLogger,
         NGXLoggerHttpService,
-        LoggerConfig
+        LoggerConfig,
+        HomeService
 
     ],
     bootstrap: [AppComponent]

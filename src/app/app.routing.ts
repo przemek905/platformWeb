@@ -5,6 +5,8 @@ import { LoginComponent } from './login/index';
 import { RegisterComponent } from './register/index';
 import { AuthGuard } from './_guards/index';
 import {RegistrationTokenComponent} from "./registration-token/registration-token.component";
+import {ResetPasswordComponent} from "./reset-password/reset-password.component";
+import {UpdatePasswordComponent} from "./update-password/update-password.component";
 
 const appRoutes: Routes = [
     {
@@ -15,6 +17,8 @@ const appRoutes: Routes = [
             {path: 'login', component: LoginComponent},
             {path: 'register', component: RegisterComponent},
             {path: 'registrationConfirm', component: RegistrationTokenComponent},
+            {path: 'resetPassword', component: ResetPasswordComponent},
+            {path: 'updatePassword', component: UpdatePasswordComponent },
 
         ]},
         // otherwise redirect to home

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import {User} from "../_models";
 import {NGXLogger} from "ngx-logger";
+import {UserService} from "./user.service";
 
 @Injectable()
 export class AuthenticationService {
@@ -18,7 +19,7 @@ export class AuthenticationService {
         observe: 'response' as 'body'
     };
 
-    constructor(private http: HttpClient, private logger: NGXLogger) {
+    constructor(private http: HttpClient, private logger: NGXLogger, private userService: UserService) {
     }
 
     login(username: string, password: string): Observable<boolean> {
@@ -29,6 +30,12 @@ export class AuthenticationService {
                 if (token) {
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
+
+                    let isReset = response.headers.get("PasswordReset");
+                    if (isReset) {
+                        localStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}));
+                        this.userService.setResetFlag(true);
+                    }
 
                     // return true to indicate successful login
                     return true;
@@ -53,6 +60,7 @@ export class AuthenticationService {
     logout(): void {
         // clear token remove user from local storage to log user out
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('passwordReset');
     }
 
     signup(user: User): Observable<User> {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { AlertService, AuthenticationService } from '../_services/index';
+import {AlertService, AuthenticationService, UserService} from '../_services/index';
 import {User} from "../_models";
 import {NGXLogger} from "ngx-logger";
 
