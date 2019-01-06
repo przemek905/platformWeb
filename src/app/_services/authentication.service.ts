@@ -5,6 +5,7 @@ import 'rxjs/add/operator/map'
 import {User} from "../_models";
 import {NGXLogger} from "ngx-logger";
 import {UserService} from "./user.service";
+import {JwtHelperService} from "@auth0/angular-jwt";
 
 @Injectable()
 export class AuthenticationService {
@@ -31,6 +32,11 @@ export class AuthenticationService {
                     // store username and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
 
+                    const helper = new JwtHelperService();
+                    const decodedToken = helper.decodeToken(token);
+                    const roles: string[] = decodedToken.roles;
+                    localStorage.setItem('userRoles', JSON.stringify(roles));
+
                     let isReset = response.headers.get("PasswordReset");
                     if (isReset) {
                         localStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}));
@@ -45,17 +51,6 @@ export class AuthenticationService {
                 }
             });
     }
-
-    // getToken(): String {
-    //     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    //     const token = currentUser && currentUser.token;
-    //     return token ? token : "";
-    // }
-    //
-    // isLoggedIn(): boolean {
-    //     var token: String = this.getToken();
-    //     return token && token.length > 0;
-    // }
 
     logout(): void {
         // clear token remove user from local storage to log user out
