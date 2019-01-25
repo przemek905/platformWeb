@@ -12,6 +12,7 @@ import {HomeService} from "../_services/home.service";
 export class HomeComponent implements OnInit {
     currentUser: User;
     message: string;
+    adminMessage: string;
 
     constructor(private userService: UserService, private logger: NGXLogger, private homeService: HomeService) {
         this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -20,7 +21,11 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         this.homeService.getMessage().subscribe(response => {
             this.message = response;
-        })
+        });
+
+        this.homeService.getAdminMessage().subscribe(response => {
+            this.adminMessage = response;
+        });
     }
 
 
