@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {AlertService, AuthenticationService, UserService} from '../_services/index';
-import {User} from "../_models";
 import {NGXLogger} from "ngx-logger";
 
 @Component({
@@ -12,6 +11,7 @@ import {NGXLogger} from "ngx-logger";
 export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
+    @Input() rememberMe = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     login() {
         this.loading = true;
         this.logger.info("Login to the platform");
-        this.authenticationService.login(this.model.username, this.model.password)
+        this.authenticationService.login(this.model.username, this.model.password, this.rememberMe)
             .subscribe(
                 data => {
                     this.router.navigate(["/pplatform"]);

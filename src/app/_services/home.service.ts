@@ -1,37 +1,41 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
+import "rxjs-compat/add/observable/of";
 
 @Injectable()
 export class HomeService {
 
-  private host = "http://localhost:8981";
-  private appPrefix = "/pplatform";
-  private homeUrl = this.host + this.appPrefix + "/";
-  private adminHomeUrl = this.host + this.appPrefix + "/adminMessage";
+    private host = "http://localhost:8981";
+    private appPrefix = "/pplatform";
+    private homeUrl = this.host + this.appPrefix + "/";
+    private adminHomeUrl = this.host + this.appPrefix + "/adminMessage";
 
     private httpOptions = {
-        headers : new HttpHeaders().set('Content-Type', 'application/json'),
+        headers: new HttpHeaders().set('Content-Type', 'application/json'),
         responseType: 'text' as 'json',
         observe: 'response' as 'body'
     };
 
-  constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
-  getMessage(): Observable<string> {
-    return this.http.get<any>(this.homeUrl, this.httpOptions)
-        .map((response) => {
-          return response.body;
-        });
-  }
-
-    getAdminMessage(): Observable<string> {
-      if(localStorage.getItem('userRoles').includes("ROLE_ADMIN")) {
-        return this.http.get<any>(this.adminHomeUrl, this.httpOptions)
+    getMessage(): Observable<string> {
+        return this.http.get<any>(this.homeUrl, this.httpOptions)
             .map((response) => {
                 return response.body;
             });
-      }
+    }
+
+    getAdminMessage(): Observable<string> {
+        if ((sessionStorage.getItem('userRoles') && sessionStorage.getItem('userRoles').includes("ROLE_ADMIN"))
+            || (localStorage.getItem('userRoles') && localStorage.getItem('userRoles').includes("ROLE_ADMIN"))) {
+            return this.http.get<any>(this.adminHomeUrl, this.httpOptions)
+                .map((response) => {
+                    return response.body;
+                });
+        }
+        return Observable.of("");
     }
 
 }

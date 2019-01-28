@@ -7,6 +7,7 @@ import { AuthGuard } from './_guards/index';
 import {RegistrationTokenComponent} from "./registration-token/registration-token.component";
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {UpdatePasswordComponent} from "./update-password/update-password.component";
+import {RememberMeGuard} from "./_guards/remember-me.guard";
 
 const appRoutes: Routes = [
     {
@@ -14,7 +15,7 @@ const appRoutes: Routes = [
         component: null,
         children: [
             {path: '', component: HomeComponent, canActivate: [AuthGuard] },
-            {path: 'login', component: LoginComponent},
+            {path: 'login', component: LoginComponent, canActivate: [RememberMeGuard] },
             {path: 'register', component: RegisterComponent},
             {path: 'registrationConfirm', component: RegistrationTokenComponent},
             {path: 'resetPassword', component: ResetPasswordComponent},

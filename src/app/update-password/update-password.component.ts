@@ -50,6 +50,7 @@ export class UpdatePasswordComponent implements OnInit, AfterViewChecked, OnDest
                 this.alertService.success('Update password completed. Please try login with new credentials.', true);
                 this.router.navigate(['/pplatform/login']);
                 this.userService.setResetFlag(false);
+                sessionStorage.removeItem('passwordReset');
                 localStorage.removeItem('passwordReset');
               },
               error => {

@@ -22,6 +22,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import {HomeService} from "./_services/home.service";
+import {RememberMeGuard} from "./_guards/remember-me.guard";
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ import {HomeService} from "./_services/home.service";
     ],
     providers: [
         AuthGuard,
+        RememberMeGuard,
         AlertService,
         AuthenticationService,
         UserService,

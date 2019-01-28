@@ -8,13 +8,19 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router, private logger: NGXLogger) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        this.logger.info("In AuthGuard. Check access to site.")
+        this.logger.info("In AuthGuard. Check access to site.");
+
         if (localStorage.getItem('currentUser') && !localStorage.getItem('passwordReset')) {
             // logged in so return true
             return true;
         }
 
-        if (localStorage.getItem('currentUser') && localStorage.getItem('passwordReset')) {
+        if (sessionStorage.getItem('currentUser') && !sessionStorage.getItem('passwordReset')) {
+            // logged in so return true
+            return true;
+        }
+
+        if (sessionStorage.getItem('currentUser') && sessionStorage.getItem('passwordReset')) {
             this.router.navigate(['/pplatform/updatePassword']);
             return false;
         }

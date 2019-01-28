@@ -23,25 +23,22 @@ export class AuthenticationService {
     constructor(private http: HttpClient, private logger: NGXLogger, private userService: UserService) {
     }
 
-    login(username: string, password: string): Observable<boolean> {
+    login(username: string, password: string, rememberMe: boolean): Observable<boolean> {
         return this.http.post<any>(this.authUrl, {username: username, password: password}, this.httpOptions)
             .map((response: Response) => {
                 // login successful if there's a jwt token in the response
                 let token = response.headers.get("Authorization");
                 if (token) {
                     // store username and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
-
-                    const helper = new JwtHelperService();
-                    const decodedToken = helper.decodeToken(token);
-                    const roles: string[] = decodedToken.roles;
-                    localStorage.setItem('userRoles', JSON.stringify(roles));
-
-                    let isReset = response.headers.get("PasswordReset");
-                    if (isReset) {
-                        localStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}));
-                        this.userService.setResetFlag(true);
+                    if (rememberMe) {
+                        localStorage.setItem('rememberMe', 'true');
+                        localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
+                        localStorage.setItem('userRoles', JSON.stringify(this.getUserRoles(token)));}
+                    else {
+                        sessionStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
+                        sessionStorage.setItem('userRoles', JSON.stringify(this.getUserRoles(token)));
                     }
+                    this.checkResetPasswordFlag(response, rememberMe);
 
                     // return true to indicate successful login
                     return true;
@@ -54,8 +51,8 @@ export class AuthenticationService {
 
     logout(): void {
         // clear token remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
-        localStorage.removeItem('passwordReset');
+        localStorage.clear();
+        sessionStorage.clear();
     }
 
     signup(user: User): Observable<User> {
@@ -71,5 +68,22 @@ export class AuthenticationService {
         .map((response) => {
             return new User(response);
         });
+    }
+
+    getUserRoles(token) {
+        const helper = new JwtHelperService();
+        const decodedToken = helper.decodeToken(token);
+        const roles: string[] = decodedToken.roles;
+        return roles;
+    }
+
+    checkResetPasswordFlag(response, rememberMe) {
+        let isReset = response.headers.get("PasswordReset");
+        if (isReset) {
+            rememberMe ?
+                localStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}))
+                : sessionStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}));
+            this.userService.setResetFlag(true);
+        }
     }
 }
