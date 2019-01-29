@@ -39,7 +39,7 @@ export class AuthenticationService {
                         sessionStorage.setItem('userRoles', JSON.stringify(this.getUserRoles(token)));
                     }
                     this.checkResetPasswordFlag(response, rememberMe);
-
+                    this.setCurrentUserGlobal(rememberMe);
                     // return true to indicate successful login
                     return true;
                 } else {
@@ -53,6 +53,7 @@ export class AuthenticationService {
         // clear token remove user from local storage to log user out
         localStorage.clear();
         sessionStorage.clear();
+        this.userService.setCurrentLoggedUser(null);
     }
 
     signup(user: User): Observable<User> {
@@ -85,5 +86,11 @@ export class AuthenticationService {
                 : sessionStorage.setItem('passwordReset', JSON.stringify({passwordReset: true}));
             this.userService.setResetFlag(true);
         }
+    }
+
+    setCurrentUserGlobal(rememberMe) {
+        this.userService.setCurrentLoggedUser(rememberMe ?
+            JSON.parse(localStorage.getItem('currentUser'))
+            : JSON.parse(sessionStorage.getItem('currentUser')));
     }
 }

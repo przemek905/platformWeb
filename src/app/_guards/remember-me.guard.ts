@@ -10,7 +10,7 @@ export class RememberMeGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         this.logger.info("In AuthGuard. Check access to site.");
 
-        if (localStorage.getItem('currentUser')) {
+        if (localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser')) {
             // logged in so no login page needed
             this.router.navigate(['/pplatform']);
             return false;

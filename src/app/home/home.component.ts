@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewChecked, Component, OnInit} from '@angular/core';
 
 import { User } from '../_models/index';
 import {AuthenticationService, UserService} from '../_services/index';
@@ -6,7 +6,8 @@ import {NGXLogger} from "ngx-logger";
 import {HomeService} from "../_services/home.service";
 
 @Component({
-    templateUrl: 'home.component.html'
+    templateUrl: 'home.component.html',
+    styleUrls: ['./home.component.css']
 })
 
 export class HomeComponent implements OnInit {
@@ -29,10 +30,6 @@ export class HomeComponent implements OnInit {
         this.homeService.getAdminMessage().subscribe(response => {
             this.adminMessage = response;
         });
-    }
-
-    logout() {
-        this.authService.logout();
     }
 
 }

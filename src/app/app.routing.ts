@@ -8,6 +8,7 @@ import {RegistrationTokenComponent} from "./registration-token/registration-toke
 import {ResetPasswordComponent} from "./reset-password/reset-password.component";
 import {UpdatePasswordComponent} from "./update-password/update-password.component";
 import {RememberMeGuard} from "./_guards/remember-me.guard";
+import {UserSettingsComponent} from "./user-settings/user-settings.component";
 
 const appRoutes: Routes = [
     {
@@ -15,6 +16,7 @@ const appRoutes: Routes = [
         component: null,
         children: [
             {path: '', component: HomeComponent, canActivate: [AuthGuard] },
+            {path: 'userSettings', component: UserSettingsComponent, canActivate: [AuthGuard] },
             {path: 'login', component: LoginComponent, canActivate: [RememberMeGuard] },
             {path: 'register', component: RegisterComponent},
             {path: 'registrationConfirm', component: RegistrationTokenComponent},

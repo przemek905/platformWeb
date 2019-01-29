@@ -23,6 +23,10 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { UpdatePasswordComponent } from './update-password/update-password.component';
 import {HomeService} from "./_services/home.service";
 import {RememberMeGuard} from "./_guards/remember-me.guard";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MaterialModule} from './material.module';
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import { UserSettingsComponent } from './user-settings/user-settings.component';
 
 @NgModule({
     imports: [
@@ -30,7 +34,12 @@ import {RememberMeGuard} from "./_guards/remember-me.guard";
         FormsModule,
         HttpClientModule,
         routing,
-        LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR})
+        LoggerModule.forRoot({serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR}),
+        BrowserAnimationsModule,
+        MaterialModule
+    ],
+    exports: [
+        MaterialModule
     ],
     declarations: [
         AppComponent,
@@ -41,7 +50,8 @@ import {RememberMeGuard} from "./_guards/remember-me.guard";
         RegistrationTokenComponent,
         MainComponent,
         ResetPasswordComponent,
-        UpdatePasswordComponent
+        UpdatePasswordComponent,
+        UserSettingsComponent
     ],
     providers: [
         AuthGuard,
@@ -64,3 +74,4 @@ import {RememberMeGuard} from "./_guards/remember-me.guard";
 })
 
 export class AppModule { }
+platformBrowserDynamic().bootstrapModule(AppModule);

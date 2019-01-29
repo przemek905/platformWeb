@@ -2,11 +2,13 @@ import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 
 import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {User} from "../_models";
 
 @Injectable()
 export class UserService {
 
     private wasResetPassword: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private currentLoggedUser: Subject<User> = new Subject<User>();
 
     private host = "http://localhost:8981";
     private appPrefix = "/pplatform";
@@ -38,6 +40,14 @@ export class UserService {
 
     getResetFlag(): Observable<boolean> {
         return this.wasResetPassword.asObservable();
+    }
+
+    setCurrentLoggedUser(currentUser) {
+        this.currentLoggedUser.next(currentUser);
+    }
+
+    getCurrentLoggedUser(): Observable<User> {
+        return this.currentLoggedUser.asObservable();
     }
 
 }
